@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SMS_APP.Models;
 using SMS_APP.Repository;
+using SMS_APP.Repository.IRepository;
 
 namespace SMS_APP.Controllers
 {
     public class StudentController : Controller
     {
-        private readonly Repository<Student> _studentRepository;
+        private readonly IStudentRepository _studentRepository;
 
-        public StudentController(Repository<Student> studentRepository)
+        public StudentController(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
         }

@@ -26,10 +26,10 @@ namespace StudentManagementSystum.Controllers
             var studentDTO = _studentRepository.GetStudent().ToList().Select(_mapper.Map<Student, StudentDTO>);
             return Ok(studentDTO);//200
         }
-        [HttpGet("{studentid:int}", Name = "GetStudent")]
-        public IActionResult GetStudent(int stuydentid)
+        [HttpGet("{studentId:int}", Name = "GetStudent")]
+        public IActionResult GetStudent(int studentid)
         {
-            var student = _studentRepository.GetStudent(stuydentid);
+            var student = _studentRepository.GetStudent(studentid);
             if (student == null) return NotFound();//404
             var studentDTO = _mapper.Map<StudentDTO>(student);
             return Ok(studentDTO);

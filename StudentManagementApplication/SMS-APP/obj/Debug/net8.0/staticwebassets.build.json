@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "jZxkcSKgC1vrfayHFddT9cpuPsEtuG0lkdtmlIxnOWU=",
+  "Hash": "a7DUlLbt212e3lsHfZzrOkwwSpehj5+RctxDRs6nmlM=",
   "Source": "SMS-APP",
   "BasePath": "_content/SMS-APP",
   "Mode": "Default",
@@ -148,6 +148,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Student.js",
+      "SourceId": "SMS-APP",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\",
+      "BasePath": "_content/SMS-APP",
+      "RelativePath": "js/Student.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Student.js"
     },
     {
       "Identity": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

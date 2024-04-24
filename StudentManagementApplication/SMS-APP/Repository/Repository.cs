@@ -88,16 +88,32 @@ namespace SMS_APP.Repository
 
         public async Task<T> GetAsync(string url, int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, url + "/" + id.ToString());
-            var client = _httpClientFactory.CreateClient();
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                var jsonstring = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(jsonstring);
+                var request = new HttpRequestMessage(HttpMethod.Get, url + "/" + id.ToString());
+                var client = _httpClientFactory.CreateClient();
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var jsonstring = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(jsonstring);
+                }
+                else
+                {
+                    // Handle other status codes or errors if needed
+                    // For now, returning null
+                    return null;
+                }
             }
-            return null;
+            catch (Exception ex)
+            {
+                // Log or handle the exception as needed
+                // For now, returning null
+                return null;
+            }
         }
+
 
         public async Task<bool> IsUniqueUser(string Email)
         {
