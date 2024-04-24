@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Course.js",
+      "PackagePath": "staticwebassets\\js\\Course.js"
+    },
+    {
       "Id": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Student.js",
       "PackagePath": "staticwebassets\\js\\Student.js"
     },

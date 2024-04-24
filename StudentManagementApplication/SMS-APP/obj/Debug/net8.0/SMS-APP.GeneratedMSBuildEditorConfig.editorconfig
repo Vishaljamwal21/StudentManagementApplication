@@ -26,6 +26,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes = true
 build_property.MSBuildProjectDirectory = D:\Project\TEST-3\StudentManagementApplication\SMS-APP
 build_property._RazorSourceGeneratorDebug = 
 
+[D:/Project/TEST-3/StudentManagementApplication/SMS-APP/Views/Course/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Project/TEST-3/StudentManagementApplication/SMS-APP/Views/Course/SaveOrUpdate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ291cnNlXFNhdmVPclVwZGF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Project/TEST-3/StudentManagementApplication/SMS-APP/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "a7DUlLbt212e3lsHfZzrOkwwSpehj5+RctxDRs6nmlM=",
+  "Hash": "rru/t7J6l4Oc/6KeEQVwOkfEF9+BKzGrMugETiEmJEI=",
   "Source": "SMS-APP",
   "BasePath": "_content/SMS-APP",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Course.js",
+      "SourceId": "SMS-APP",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\",
+      "BasePath": "_content/SMS-APP",
+      "RelativePath": "js/Course.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\Course.js"
     },
     {
       "Identity": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\site.js",

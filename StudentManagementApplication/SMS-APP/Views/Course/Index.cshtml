@@ -1,0 +1,26 @@
+﻿<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">Course List</h2>
+    </div>
+    <div class="col-3">
+        <a class="btn btn-success form-control" asp-action="SaveorUpdate">
+            <i class="fas fa-plus"></i>
+            Add Courses
+        </a>
+    </div>
+</div>
+<div class="container rounded border m-2 p-2">
+    <table id="tabledata" class="table table-bordered table-active table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Duration</th>
+                <th>Action Buttons</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section scripts {
+    <script src="~/js/Course.js"></script>
+}
