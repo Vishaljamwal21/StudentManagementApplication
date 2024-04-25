@@ -28,20 +28,16 @@ namespace SMS_APP.Repository
                 }
                 else if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
-                    // Handle 400 Bad Request response
                     var errorMessage = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Authentication failed: {errorMessage}");
                 }
                 else
                 {
-                    // Handle other non-successful status codes
                     throw new Exception($"Authentication failed: {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                // Handle any exceptions that occur during the request
-                // Log the exception or return null, depending on your application logic
                 return null;
             }
         }
@@ -101,15 +97,11 @@ namespace SMS_APP.Repository
                 }
                 else
                 {
-                    // Handle other status codes or errors if needed
-                    // For now, returning null
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                // Log or handle the exception as needed
-                // For now, returning null
                 return null;
             }
         }
@@ -162,5 +154,67 @@ namespace SMS_APP.Repository
             else
                 return false;
         }
+        public async Task<IEnumerable<Student>> GetStudentByEmailAsync(string email, string url)
+        {
+            var allData = await GetAllAsync(url);
+            if (typeof(T) == typeof(Student))
+            {
+                var studentData = allData as IEnumerable<Student>;
+                if (studentData != null)
+                {
+                    return studentData.Where(student => student.Email == email).ToList();
+                }
+            }
+            return null;
+        }
+        public async Task<bool> IsUniqueEmail(string email)
+        {
+            try
+            {
+                var url = $"{URL.RegisterAPIPath}/IsUniqueUser/{email}";
+                var response = await _httpClientFactory.CreateClient().GetAsync(url);
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public async Task<IEnumerable<Enrollment>> GetEnrollmentsByStudentId(int studentId)
+        {
+            try
+            {
+                var url = $"{URL.EnrollmentAPIPath}?studentId={studentId}";
+                var response = await _httpClientFactory.CreateClient().GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseData = await response.Content.ReadAsStringAsync();
+                    var allEnrollments = JsonConvert.DeserializeObject<IEnumerable<Enrollment>>(responseData);
+
+                    // Filter enrollments by studentId
+                    var studentEnrollments = allEnrollments.Where(enrollment => enrollment.StudentId == studentId);
+
+                    return studentEnrollments;
+                }
+                else if (response.StatusCode == HttpStatusCode.NotFound)
+                {
+                    // Handle the case where no enrollments are found for the student
+                    return Enumerable.Empty<Enrollment>(); // Return an empty collection
+                }
+                else
+                {
+                    throw new Exception($"Failed to retrieve enrollments for student with ID {studentId}. Status code: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while retrieving enrollments for student with ID {studentId}.", ex);
+            }
+        }
+
+
+
+
     }
 }

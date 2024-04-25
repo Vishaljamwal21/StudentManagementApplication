@@ -30,11 +30,20 @@ namespace StudentManagementSystum.Repository
 
         public Enrollment GetEnrollment(int enrollmentId)
         {
-            return _context.Enrollments
-                .Include(e => e.Student)
-                .Include(e => e.Course)
-                .FirstOrDefault(e => e.Id == enrollmentId);
+            try
+            {
+                return _context.Enrollments
+                    .Include(e => e.Student)
+                    .Include(e => e.Course)
+                    .FirstOrDefault(e => e.Id == enrollmentId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
+
 
 
         public ICollection<Enrollment> GetEnrollments()

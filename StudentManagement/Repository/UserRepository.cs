@@ -20,7 +20,20 @@ namespace StudentManagementSystum.Repository
             // Check if this is the first user being registered
             bool isFirstUser = !_context.Users.Any();
 
-            string role = isFirstUser ? "Admin" : _context.Users.Count() < 2 ? "Teacher" : "Student";
+            // Set the role based on the number of existing users
+            string role;
+            if (isFirstUser)
+            {
+                role = "Admin";
+            }
+            else if (_context.Users.Count() == 1)
+            {
+                role = "Teacher";
+            }
+            else
+            {
+                role = "Student";
+            }
 
             User user = new User()
             {
@@ -34,6 +47,7 @@ namespace StudentManagementSystum.Repository
 
             return user;
         }
+
 
         public User Authenticate(string email, string password)
         {

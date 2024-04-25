@@ -25,7 +25,7 @@
 
                         <div class="form-group">
                             <label asp-for="DateOfBirth" class="control-label"></label>
-                            <input asp-for="DateOfBirth" class="form-control" />
+                            <input asp-for="DateOfBirth" class="form-control" id="dateOfBirth" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
 
@@ -54,4 +54,13 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Set current date and time for the DateOfBirth field
+        $(document).ready(function () {
+            var currentDate = new Date();
+            var formattedDate = currentDate.toISOString().substr(0, 10);
+            $('#dateOfBirth').val(formattedDate);
+        });
+    </script>
 }

@@ -1,0 +1,62 @@
+﻿@model SMS_APP.Models.Grade
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center">@((Model.Id == 0) ? "Add Grade" : "Update Grade")</h2>
+
+                    <form asp-action="SaveOrUpdate" method="post" id="gradeForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Enrollment.StudentId" />
+                        <input type="hidden" asp-for="EnrollmentId" hidden />
+                        <div class="form-group">
+                            <label class="control-label">Student</label>
+                            <input type="text" class="form-control" value="@Model.Enrollment.Student.Name" readonly />
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">Course</label>
+                            <input type="text" class="form-control" value="@Model.Enrollment.Course.Title" readonly />
+                            <!-- Display student name as readonly text -->
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GradeValue" class="control-label">Grade</label>
+                            <input asp-for="GradeValue" class="form-control" pattern="[A-F]{1}" title="Grade must be a single alphabet (A, B, C, D, F)" />
+                            <span asp-validation-for="GradeValue" class="text-danger"></span> <!-- Move this line here -->
+                        </div>
+
+                        </br>
+                        <div class="form-group text-center">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <a asp-controller="Enrollment" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("gradeForm").addEventListener("submit", function (event) {
+            var gradeValue = document.getElementById("GradeValue").value;
+            if (!/^[A-F]{1}$/.test(gradeValue)) {
+                event.preventDefault();
+                document.getElementById("GradeValue").setCustomValidity("Grade must be a single alphabet (A, B, C, D, F)");
+            } else {
+                document.getElementById("GradeValue").setCustomValidity(""); // Clear custom validity
+            }
+        });
+
+        // Add an event listener to clear custom validity when the input field changes
+        document.getElementById("GradeValue").addEventListener("input", function () {
+            this.setCustomValidity(""); // Clear custom validity
+        });
+    </script>
+}
+

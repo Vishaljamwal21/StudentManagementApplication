@@ -34,26 +34,27 @@ namespace StudentManagementSystum.Controllers
             var studentDTO = _mapper.Map<StudentDTO>(student);
             return Ok(studentDTO);
         }
+
         [HttpPost]
-        public IActionResult CreateStudent([FromBody] StudentDTO studentDTO)
+        public async Task<IActionResult> CreateStudent([FromBody] StudentDTO studentDTO)
         {
-            if (studentDTO == null) return BadRequest(ModelState);//400
-            if (_studentRepository.StudentExists(studentDTO.Name))
+            if (studentDTO == null) return BadRequest(ModelState); //400
+            if (!await _studentRepository.IsUniqueEmail(studentDTO.Email))
             {
-                ModelState.AddModelError("", "Student in DB !!!!");
+                ModelState.AddModelError("", "Email already exists.");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            if (!ModelState.IsValid) return BadRequest();//400 Error
+            if (!ModelState.IsValid) return BadRequest(); //400 Error
+
             var student = _mapper.Map<StudentDTO, Student>(studentDTO);
 
             if (!_studentRepository.Createstudent(student))
             {
-                ModelState.AddModelError("", $"Something went wrong while saving data:{student.Name}");
+                ModelState.AddModelError("", $"Something went wrong while saving data: {student.Name}");
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            //return Ok();//200
-            return CreatedAtRoute("GetStudent",
-                new { studentid = student.Id }, student);
+
+            return CreatedAtRoute("GetStudent", new { studentid = student.Id }, student);
         }
         [HttpPut]
         public IActionResult UpdateStudent([FromBody] StudentDTO studentDTO)
@@ -81,5 +82,6 @@ namespace StudentManagementSystum.Controllers
             }
             return Ok();
         }
+
     }
 }

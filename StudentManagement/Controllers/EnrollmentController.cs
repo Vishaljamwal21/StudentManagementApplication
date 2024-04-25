@@ -28,7 +28,7 @@ namespace StudentManagementSystum.Controllers
             return Ok(enrollmentsDto);
         }
 
-        [HttpGet("{enrollmentid:int}",Name ="GetEnrollment")]
+        [HttpGet("{id:int}", Name = "GetEnrollment")]
         public IActionResult GetEnrollment(int id)
         {
             var enrollment = _enrollmentRepository.GetEnrollment(id);
@@ -50,6 +50,14 @@ namespace StudentManagementSystum.Controllers
                     return BadRequest();
                 }
 
+                var studentId = enrollmentDto.StudentId;
+                var existingEnrollments = _enrollmentRepository.GetEnrollmentsByStudentId(studentId);
+                if (existingEnrollments != null && existingEnrollments.Count > 0)
+                {
+                    // Student is already enrolled
+                    return Conflict("Student is already enrolled.");
+                }
+
                 var enrollment = _mapper.Map<Enrollment>(enrollmentDto);
                 if (!_enrollmentRepository.CreateEnrollment(enrollment))
                 {
@@ -60,13 +68,11 @@ namespace StudentManagementSystum.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception for debugging purposes
                 Console.WriteLine($"An error occurred: {ex}");
-
-                // Return a generic error message
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
+
 
 
         [HttpPut("{id}")]

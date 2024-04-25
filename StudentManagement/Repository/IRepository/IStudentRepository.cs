@@ -11,6 +11,8 @@ namespace StudentManagementSystum.Repository.IRepository
         bool Createstudent(Student student);
         bool Updatestudent(Student student);
         bool Deletestudent(Student student);
+        ICollection<Student> GetStudentsByEmail(string email);
+        Task<bool> IsUniqueEmail(string email);
         bool Save();
     }
 }

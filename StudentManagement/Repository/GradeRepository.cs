@@ -18,6 +18,17 @@ namespace StudentManagementSystum.Repository
 
         public bool CreateGrade(Grade grade)
         {
+            var enrollment = _context.Enrollments
+                .Include(e => e.Course) // Ensure Course is included in the query
+                .FirstOrDefault(e => e.Id == grade.EnrollmentId);
+            if (enrollment == null)
+            {
+                return false;
+            }
+            if (enrollment.Course == null)
+            {
+                return false;
+            }
             _context.Grades.Add(grade);
             return Save();
         }
@@ -30,7 +41,6 @@ namespace StudentManagementSystum.Repository
 
         public Grade GetGrade(int gradeId)
         {
-            // Include Enrollment navigation property with its related entities (Student and Course)
             return _context.Grades
                 .Include(g => g.Enrollment)
                     .ThenInclude(e => e.Student)
@@ -41,7 +51,6 @@ namespace StudentManagementSystum.Repository
 
         public ICollection<Grade> GetGrades()
         {
-            // Include Enrollment navigation property with its related entities (Student and Course)
             return _context.Grades
                 .Include(g => g.Enrollment)
                     .ThenInclude(e => e.Student)

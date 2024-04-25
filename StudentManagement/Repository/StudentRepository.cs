@@ -1,4 +1,5 @@
-﻿using StudentManagementSystum.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentManagementSystum.Data;
 using StudentManagementSystum.Models;
 using StudentManagementSystum.Repository.IRepository;
 
@@ -52,6 +53,14 @@ namespace StudentManagementSystum.Repository
         {
             _context.Students.Update(student);
             return Save();
+        }
+        public ICollection<Student> GetStudentsByEmail(string email)
+        {
+            return _context.Students.Where(student => student.Email == email).ToList();
+        }
+        public async Task<bool> IsUniqueEmail(string email)
+        {
+            return !await _context.Students.AnyAsync(s => s.Email == email);
         }
     }
 }

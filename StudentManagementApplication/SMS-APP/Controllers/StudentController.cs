@@ -18,8 +18,25 @@ namespace SMS_APP.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Json(new { data = await _studentRepository.GetAllAsync(URL.StudentAPIPath) });
+            var userRole = SessionHandler.GetUserRole(HttpContext);
+            if (userRole == "Student")
+            {
+                var userEmail = SessionHandler.GetUserEmail(HttpContext);
+                var studentData = await _studentRepository.GetStudentByEmailAsync(userEmail, URL.StudentAPIPath);
+                return Json(new { data = studentData });
+            }
+            else if (userRole == "Admin" || userRole == "Teacher")
+            {
+                var allData = await _studentRepository.GetAllAsync(URL.StudentAPIPath);
+                return Json(new { data = allData });
+            }
+            else
+            {
+                return BadRequest("Unauthorized access");
+            }
         }
+
+
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
@@ -55,12 +72,31 @@ namespace SMS_APP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveorUpdate(Student student)
         {
+            var loggedInUserEmail = SessionHandler.GetUserEmail(HttpContext);
+            if (student.Email != loggedInUserEmail)
+            {
+                ModelState.AddModelError(nameof(Student.Email), "The entered email does not match your login email.");
+                return View(student);
+            }
+
             if (ModelState.IsValid)
             {
                 if (student.Id == 0)
+                {
+                    // Check if the email already exists in the database
+                    var isUniqueEmail = await _studentRepository.IsUniqueEmail(student.Email);
+                    if (isUniqueEmail)
+                    {
+                        ModelState.AddModelError(nameof(Student.Email), "A student with the same email already exists.");
+                        return View(student);
+                    }
+
                     await _studentRepository.CreateAsync(URL.StudentAPIPath, student);
+                }
                 else
+                {
                     await _studentRepository.UpdateAsync(URL.StudentAPIPath, student);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -69,5 +105,7 @@ namespace SMS_APP.Controllers
                 return View(student);
             }
         }
+
+
     }
 }

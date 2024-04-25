@@ -8,7 +8,7 @@
         public static string EnrollmentAPIPath = APIBaseURl + "api/Enrollment";
         public static string GradeAPIPath = APIBaseURl + "api/Grade";
         // UserController URLs
-        public static string AuthenticateAPIPath = APIBaseURl + "api/User/Autheticate";
+        public static string AuthenticateAPIPath = APIBaseURl + "api/User/Authenticate";
         public static string RegisterAPIPath = APIBaseURl + "api/User/Register";
     }
 }

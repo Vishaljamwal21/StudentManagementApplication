@@ -17,6 +17,14 @@
       "PackagePath": "staticwebassets\\js\\Course.js"
     },
     {
+      "Id": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Enrollment.js",
+      "PackagePath": "staticwebassets\\js\\Enrollment.js"
+    },
+    {
+      "Id": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Grade.js",
+      "PackagePath": "staticwebassets\\js\\Grade.js"
+    },
+    {
       "Id": "D:\\Project\\TEST-3\\StudentManagementApplication\\SMS-APP\\wwwroot\\js\\Student.js",
       "PackagePath": "staticwebassets\\js\\Student.js"
     },

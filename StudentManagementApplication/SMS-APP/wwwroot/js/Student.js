@@ -11,8 +11,8 @@ function loaddatatable() {
             "datatype": "json"
         },
         "columns": [
-            { "data": "name", "width": "20%" },
-            { "data": "email", "width": "20%" },
+            { "data": "name", "width": "10%" },
+            { "data": "email", "width": "15%" },
             { "data": "dateOfBirth", "width": "20%" },
             { "data": "city", "width": "15%" },
             { "data": "state", "width": "15%" },
@@ -22,6 +22,7 @@ function loaddatatable() {
                     return `
                             <div class="text-center">
                            <a class="btn btn-primary" href="/Student/SaveorUpdate/${data}"><i class="fas fa-edit"></i></a>
+                           <a class="btn btn-primary" href="/Enrollment/SaveOrUpdate?studentId=${data}">Enroll</a> <!-- Corrected URL and added text "Enroll" -->
                             <a class="btn btn-danger" onclick=Delete("Student/Delete/${data}")><i class="fas fa-trash"></i></a>
                             </div>
                             `;

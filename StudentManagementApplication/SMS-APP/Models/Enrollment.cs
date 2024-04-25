@@ -12,5 +12,7 @@ namespace SMS_APP.Models
         public Student Student { get; set; }
         [ForeignKey("CourseId")]
         public Course Course { get; set; }
+        [NotMapped]
+        public List<Course> CourseList { get; set; }
     }
 }

@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var isAuthenticated = !string.IsNullOrEmpty(Context.Session.GetString("Token"));
+    var userEmail = SessionHandler.GetUserEmail(Context);
+    var userRole = SessionHandler.GetUserRole(Context);
+}
+
+<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">Students List</h2>
+    </div>
+</div>
+<div class="container rounded border m-2 p-2">
+    <table id="tabledata" class="table table-bordered table-active table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Course Name</th>
+                <th>Grade</th>
+                @if (userRole == "Admin" || userRole == "Teacher")
+                {
+                    <th>Action Buttons</th>
+                }
+            </tr>
+        </thead>
+    </table>
+</div>
+@section scripts {
+    <script src="~/js/Grade.js"></script>
+    <script>
+        var datatable;
+
+        $(document).ready(function () {
+            // Check if the DataTable is already initialized
+            if (!$.fn.DataTable.isDataTable('#tabledata')) {
+                loaddatatable();
+            }
+        });
+
+        function loaddatatable() {
+            datatable = $("#tabledata").DataTable({
+                "ajax": {
+                    "url": "/Grade/GetAll",
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "enrollment.student.name", "width": "20%" },
+                    { "data": "enrollment.course.title", "width": "20%" },
+                    { "data": "gradeValue", "width": "20%" },
+                    @{
+                        if (userRole == "Admin" || userRole == "Teacher")
+                        {
+                            <text>
+                                {
+                                    "data": "id",
+                                    "render": function (data) {
+                                        return `
+                                            <div class="text-center">
+                                                <a class="btn btn-danger" onclick="DeleteGrade(${data})"><i class="fas fa-trash"></i></a>
+                                            </div>
+                                        `;
+                                    }
+                                },
+                            </text>
+                        }
+                        else
+                        {
+                            <text></text>
+                        }
+                    }
+                ]
+            });
+        }
+
+        function DeleteGrade(gradeId) {
+            swal({
+                text: "Delete Grade",
+                title: "Do you want to delete the information",
+                buttons: true,
+                icon: "warning",
+                dangermodel: true
+            }).then((willdelete) => {
+                if (willdelete) {
+                    $.ajax({
+                        url: `/Grade/Delete?id=${gradeId}`,
+                        type: "DELETE",
+                        success: function (data) {
+                            if (data.success) {
+                                datatable.ajax.reload();
+                                toastr.success(data.message);
+                            } else {
+                                toastr.error(data.message);
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}
+
+

@@ -1,0 +1,107 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var isAuthenticated = !string.IsNullOrEmpty(Context.Session.GetString("Token"));
+    var userEmail = SessionHandler.GetUserEmail(Context);
+    var userRole = SessionHandler.GetUserRole(Context);
+}
+
+<div class="row">
+    <div class="col-9">
+        <h2 class="text-primary">Student List</h2>
+    </div>
+</div>
+<div class="container rounded border m-2 p-2">
+    <table id="tabledata" class="table table-bordered table-active table-striped">
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Course Name</th>
+                <th>Enrollment Date</th>
+                @if (userRole == "Admin" || userRole == "Teacher")
+                {
+                    <th>Action Buttons</th>
+                }
+            </tr>
+        </thead>
+    </table>
+</div>
+@section scripts {
+    <script>
+
+        var datatable;
+
+        $(document).ready(function () {
+            loaddatatable();
+        });
+
+        function loaddatatable() {
+            datatable = $("#tabledata").DataTable({
+                "ajax": {
+                    "url": "/Enrollment/GetAll",
+                    "type": "GET",
+                    "dataType": "json"
+                },
+                "columns": [
+                    { "data": "student.name", "width": "20%" },
+                    { "data": "course.title", "width": "20%" },
+                    { "data": "enrollmentDate", "width": "20%" },
+        @{
+            if (userRole == "Admin" || userRole == "Teacher")
+            {
+                <text>
+                            {
+                                "data": "id",
+                                "render": function (data) {
+                                    return `
+                                                                            <div class="text-center">
+                                                                                <a class="btn btn-danger" onclick="DeleteEnrollment(${data})"><i class="fas fa-trash"></i></a>
+                                                                                <a class="btn btn-primary" href="/Grade/SaveOrUpdate?enrollmentId=${data}" @if (userRole != "Teacher")
+                        {
+                            <text>disabled</text>
+                        }>Grade</a>
+                                                                            </div>
+                                                                        `;
+                                }
+                            },
+                </text>
+            }
+            else
+            {
+                <text></text>
+            }
+        }
+                                ]
+            });
+        }
+
+        function DeleteEnrollment(enrollmentId) {
+            swal({
+                text: "Delete Enrollment",
+                title: "Do you want to delete the information",
+                buttons: true,
+                icon: "warning",
+                dangermodel: true
+            }).then((willdelete) => {
+                if (willdelete) {
+                    $.ajax({
+                        url: `/Enrollment/Delete?id=${enrollmentId}`,
+                        type: "DELETE",
+                        success: function (data) {
+                            if (data.success) {
+                                datatable.ajax.reload();
+                                toastr.success(data.message);
+                            } else {
+                                toastr.error(data.message);
+                            }
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        }
+
+    </script>
+}

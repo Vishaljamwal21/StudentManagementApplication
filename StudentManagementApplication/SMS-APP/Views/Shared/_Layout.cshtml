@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var isAuthenticated = !string.IsNullOrEmpty(Context.Session.GetString("Token"));
+    var userEmail = SessionHandler.GetUserEmail(Context);
+    var userRole = SessionHandler.GetUserRole(Context);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,16 +29,55 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Register</a>
-                        </li></li> <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
-                        </li>
+                       
+                        @if (isAuthenticated)
+                        {                         
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Enrollment" asp-action="Index">Enroll</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Grade" asp-action="Index">Grade Details</a>
+                            </li>
+                            @if (isAuthenticated && userRole == "Admin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+
+
+                        @if (isAuthenticated)
+                        {
+                            <form asp-area="" asp-controller="User" asp-action="Logout" method="post" class="form-inline">
+                                <div class="d-flex align-items-center">
+                                    <span class="nav-link text-dark mr-3">Hii !: @userEmail</span>
+                                    <button type="submit" class="nav-link btn btn-danger text-dark">Logout</button>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div>
+                                <a class="btn btn-outline-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
+                            </div>
+                            <div>
+                                <a class="btn btn-outline-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            </div>
+                        }
+
+                      
                     </ul>
                 </div>
             </div>
@@ -44,9 +90,7 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - SMS_APP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
+       
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
