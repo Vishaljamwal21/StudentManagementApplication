@@ -212,9 +212,5 @@ namespace SMS_APP.Repository
                 throw new Exception($"An error occurred while retrieving enrollments for student with ID {studentId}.", ex);
             }
         }
-
-
-
-
     }
 }

@@ -36,8 +36,6 @@ namespace SMS_APP.Controllers
 
             return View(userVM);
         }
-
-
         public IActionResult Login()
         {
             return View();
@@ -62,6 +60,7 @@ namespace SMS_APP.Controllers
 
                     if (SessionHandler.GetToken(HttpContext) != null && SessionHandler.GetUserEmail(HttpContext) != null && SessionHandler.GetUserRole(HttpContext) != null)
                     {
+                        SessionHandler.SetToken(HttpContext, result.Token);
                         return RedirectToAction("Index", "Student");
                     }
                     else
@@ -82,15 +81,12 @@ namespace SMS_APP.Controllers
 
             return View(userVM);
         }
-
-
-
         [HttpPost("Logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
-
+       
     }
 }

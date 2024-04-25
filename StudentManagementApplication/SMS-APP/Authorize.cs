@@ -18,20 +18,15 @@ namespace SMS_APP
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var tokenFromSession = SessionHandler.GetToken(context.HttpContext);
-
             if (string.IsNullOrEmpty(tokenFromSession))
             {
-                // Redirect to login if token is missing
                 context.Result = new RedirectToActionResult("Login", "User", null);
                 return;
             }
-
             // Define your JWT secret key
             var secretKey = "veryLongAndSecureSecretKeyWith32CharactersMin";
-
             // Initialize the security key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-
             // Validate the JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
             try
@@ -51,16 +46,13 @@ namespace SMS_APP
                     context.Result = new ForbidResult(); // Return 403 Forbidden if role claim is missing
                     return;
                 }
-
                 var userRole = roleClaim.Value;
-
                 // Check if the user role allows access to the requested controller
                 if (userRole == "Admin" || userRole == "User" || userRole == "Teacher")
                 {
                     // Allow access to all controllers for Admin, User, and Teacher roles
                     return;
                 }
-
                 else
                 {
                     _logger.LogInformation("Unknown role found in the token.");

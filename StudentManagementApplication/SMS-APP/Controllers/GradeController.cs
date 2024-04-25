@@ -41,7 +41,6 @@ namespace SMS_APP.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var grades = await _gradeRepository.GetAllAsync(URL.GradeAPIPath);
             return View();
         }
 
@@ -60,7 +59,6 @@ namespace SMS_APP.Controllers
             {
                 Enrollment = enrollment
             };
-
             return View(grade);
         }
         [HttpPost]
@@ -75,6 +73,7 @@ namespace SMS_APP.Controllers
                     ModelState.AddModelError("", "Enrollment does not have a valid associated Course.");
                     return View(grade);
                 }
+                grade.Enrollment.CourseId = enrollment.Course.Id;
                 if (grade.Id == 0)
                 {
                     await _gradeRepository.CreateAsync(URL.GradeAPIPath, grade);
@@ -83,7 +82,6 @@ namespace SMS_APP.Controllers
                 {
                     await _gradeRepository.UpdateAsync(URL.GradeAPIPath, grade);
                 }
-
                 return RedirectToAction(nameof(Index));
             }
             else

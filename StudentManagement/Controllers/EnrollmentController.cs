@@ -49,7 +49,6 @@ namespace StudentManagementSystum.Controllers
                 {
                     return BadRequest();
                 }
-
                 var studentId = enrollmentDto.StudentId;
                 var existingEnrollments = _enrollmentRepository.GetEnrollmentsByStudentId(studentId);
                 if (existingEnrollments != null && existingEnrollments.Count > 0)
@@ -57,13 +56,11 @@ namespace StudentManagementSystum.Controllers
                     // Student is already enrolled
                     return Conflict("Student is already enrolled.");
                 }
-
                 var enrollment = _mapper.Map<Enrollment>(enrollmentDto);
                 if (!_enrollmentRepository.CreateEnrollment(enrollment))
                 {
                     return StatusCode(500, "Internal server error while creating the enrollment.");
                 }
-
                 return CreatedAtAction(nameof(GetEnrollment), new { id = enrollment.Id }, enrollment);
             }
             catch (Exception ex)
@@ -73,8 +70,6 @@ namespace StudentManagementSystum.Controllers
             }
         }
 
-
-
         [HttpPut("{id}")]
         public IActionResult UpdateEnrollment(int id, EnrollmentDTO enrollmentDto)
         {
@@ -82,13 +77,11 @@ namespace StudentManagementSystum.Controllers
             {
                 return BadRequest("Enrollment ID mismatch");
             }
-
             var enrollment = _mapper.Map<Enrollment>(enrollmentDto);
             if (!_enrollmentRepository.UpdateEnrollment(enrollment))
             {
                 return StatusCode(500, "Internal server error while updating the enrollment.");
             }
-
             return NoContent();
         }
 
@@ -100,12 +93,10 @@ namespace StudentManagementSystum.Controllers
             {
                 return NotFound();
             }
-
             if (!_enrollmentRepository.DeleteEnrollment(enrollment))
             {
                 return StatusCode(500, "Internal server error while deleting the enrollment.");
             }
-
             return NoContent();
         }
     }

@@ -18,20 +18,18 @@ namespace StudentManagementSystum.Repository
 
         public bool CreateGrade(Grade grade)
         {
-            var enrollment = _context.Enrollments
-                .Include(e => e.Course) // Ensure Course is included in the query
-                .FirstOrDefault(e => e.Id == grade.EnrollmentId);
+            var enrollmentId = grade.EnrollmentId;
+            var enrollment = _context.Enrollments.FirstOrDefault(e => e.Id == enrollmentId);
             if (enrollment == null)
             {
                 return false;
             }
-            if (enrollment.Course == null)
-            {
-                return false;
-            }
+            grade.Enrollment = null;
             _context.Grades.Add(grade);
             return Save();
         }
+
+
 
         public bool DeleteGrade(Grade grade)
         {
@@ -74,5 +72,6 @@ namespace StudentManagementSystum.Repository
         {
             return _context.Grades.Any(g => g.Id == gradeId);
         }
+
     }
 }

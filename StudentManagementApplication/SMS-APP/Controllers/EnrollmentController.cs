@@ -107,10 +107,5 @@ namespace SMS_APP.Controllers
                 return View(enrollment);
             }
         }
-
-
-
-
-
     }
 }

@@ -9,12 +9,6 @@ namespace StudentManagementSystum.Models
         public int EnrollmentId { get; set; }
         [ForeignKey("EnrollmentId")]
         public Enrollment Enrollment { get; set; }
-
-        //[NotMapped]
-        //public int StudentId => Enrollment?.StudentId ?? 0;
-
-        //[NotMapped]
-        //public int CourseId => Enrollment?.CourseId ?? 0;
     }
 }
 

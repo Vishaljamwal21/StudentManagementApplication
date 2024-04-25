@@ -39,7 +39,13 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
-
+builder.Services.AddSession(options =>
+{
+    // Set session timeout if needed
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Example timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -60,6 +66,7 @@ app.UseSession();
 // Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
