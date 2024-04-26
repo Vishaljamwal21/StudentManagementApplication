@@ -58,14 +58,13 @@ namespace SMS_APP.Controllers
                     SessionHandler.SetUserEmail(HttpContext, result.Email);
                     SessionHandler.SetUserRole(HttpContext, result.Role);
 
-                    if (SessionHandler.GetToken(HttpContext) != null && SessionHandler.GetUserEmail(HttpContext) != null && SessionHandler.GetUserRole(HttpContext) != null)
+                    if (SessionHandler.GetUserRole(HttpContext) == "Teacher")
                     {
-                        SessionHandler.SetToken(HttpContext, result.Token);
-                        return RedirectToAction("Index", "Student");
+                        return RedirectToAction("Index", "Enrollment");
                     }
                     else
                     {
-                        throw new Exception("Token, email, or role is not stored in session.");
+                        return RedirectToAction("Index", "Student");
                     }
                 }
                 else
