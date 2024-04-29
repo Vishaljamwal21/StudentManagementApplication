@@ -17,6 +17,7 @@ namespace SMS_APP.Repository.IRepository
         Task<IEnumerable<Student>> GetStudentByEmailAsync(string email, string url);
         Task<bool> IsUniqueEmail(string email);
         Task<IEnumerable<Enrollment>> GetEnrollmentsByStudentId(int studentId);
+        Task<Grade> GetByEnrollmentIdAsync(string url, int enrollmentId);
 
     }
 }

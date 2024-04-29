@@ -55,18 +55,36 @@ namespace SMS_APP.Controllers
             {
                 return NotFound("Enrollment not found.");
             }
+            string studentName = enrollment.Student?.Name;
+            string courseTitle = enrollment.Course?.Title;
+
             Grade grade = new Grade
             {
                 Enrollment = enrollment
             };
+            ViewData["StudentName"] = studentName;
+            ViewData["CourseTitle"] = courseTitle;
             return View(grade);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveOrUpdate(Grade grade)
         {
             if (ModelState.IsValid)
             {
+                var existingGrade = await _gradeRepository.GetByEnrollmentIdAsync(URL.GradeAPIPath, grade.EnrollmentId);
+                if (existingGrade != null)
+                {
+                    var enroll = await _enrollmentRepository.GetAsync(URL.EnrollmentAPIPath, grade.EnrollmentId);
+                    string studentName = enroll.Student?.Name;
+                    string courseTitle = enroll.Course?.Title;
+                    ViewData["StudentName"] = studentName;
+                    ViewData["CourseTitle"] = courseTitle;
+
+                    ModelState.AddModelError("", "A grade for this enrollment already exists.");
+                    return View(grade);
+                }
                 var enrollment = await _enrollmentRepository.GetAsync(URL.EnrollmentAPIPath, grade.EnrollmentId);
                 if (enrollment.Course == null)
                 {
@@ -74,6 +92,8 @@ namespace SMS_APP.Controllers
                     return View(grade);
                 }
                 grade.Enrollment.CourseId = enrollment.Course.Id;
+
+                // If no existing grade is found, proceed with saving or updating the grade
                 if (grade.Id == 0)
                 {
                     await _gradeRepository.CreateAsync(URL.GradeAPIPath, grade);

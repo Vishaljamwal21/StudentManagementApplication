@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using SMS_APP.Models;
 using SMS_APP.Repository.IRepository;
 
@@ -19,11 +21,11 @@ namespace SMS_APP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(UserVM userVM)
+        public async Task<IActionResult> Register(User user)
         {
             if (ModelState.IsValid)
             {
-                var response = await _userRepository.Register(userVM.Email, userVM.Password);
+                var response = await _userRepository.Register(user.Email, user.Password);
                 if (response != null)
                 {
                     return RedirectToAction("Login");
@@ -34,7 +36,7 @@ namespace SMS_APP.Controllers
                 }
             }
 
-            return View(userVM);
+            return View(user);
         }
         public IActionResult Login()
         {
@@ -47,13 +49,12 @@ namespace SMS_APP.Controllers
             {
                 return View(userVM);
             }
-
             try
             {
                 var result = await _userRepository.Authenticate(userVM.Email, userVM.Password);
-
                 if (result != null && !string.IsNullOrEmpty(result.Token))
                 {
+                    // Set server-side session data
                     SessionHandler.SetToken(HttpContext, result.Token);
                     SessionHandler.SetUserEmail(HttpContext, result.Email);
                     SessionHandler.SetUserRole(HttpContext, result.Role);
@@ -74,18 +75,16 @@ namespace SMS_APP.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it appropriately
                 return BadRequest();
             }
-
             return View(userVM);
         }
         [HttpPost("Logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
+            HttpContext.Response.Cookies.Delete("token");
             return RedirectToAction("Login");
         }
-       
     }
 }

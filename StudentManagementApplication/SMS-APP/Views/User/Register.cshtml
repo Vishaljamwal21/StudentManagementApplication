@@ -1,4 +1,4 @@
-﻿@model SMS_APP.Models.UserVM
+﻿@model SMS_APP.Models.User
 
 <div class="container">
     <div class="row justify-content-center">
@@ -10,10 +10,14 @@
                 <div class="card-body">
                     <form asp-action="Register" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label">Name</label>
+                            <input asp-for="UserName" class="form-control" required/>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
                         <div class="form-group">
                             <label asp-for="Email" class="control-label">Email</label>
-                            <input asp-for="Email" class="form-control" />
+                            <input asp-for="Email" class="form-control" type="email" id="email" name="Email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
@@ -32,3 +36,26 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $.validator.addMethod("gmailFormat", function (value, element) {
+            return this.optional(element) || /\b[A-Za-z0-9._%+-]+@@gmail\.com\b/.test(value);
+        }, "Please enter a valid email");
+
+        // Initialize jQuery validation
+        $("#email").rules("add", {
+            required: true,
+            email: true,
+            gmailFormat: true,
+            messages: {
+                required: "Email is required",
+                email: "Invalid email address",
+                gmailFormat: "Please enter a valid email"
+            }
+        });
+    });
+</script>
+
+
+
+

@@ -72,6 +72,9 @@ namespace StudentManagementSystum.Repository
         {
             return _context.Grades.Any(g => g.Id == gradeId);
         }
-
+        public async Task<Grade> GetByEnrollmentIdAsync(int enrollmentId)
+        {
+            return await _context.Grades.FirstOrDefaultAsync(g => g.EnrollmentId == enrollmentId);
+        }
     }
 }

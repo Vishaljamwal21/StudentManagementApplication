@@ -199,8 +199,7 @@ namespace SMS_APP.Repository
                 }
                 else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
-                    // Handle the case where no enrollments are found for the student
-                    return Enumerable.Empty<Enrollment>(); // Return an empty collection
+                    return Enumerable.Empty<Enrollment>();
                 }
                 else
                 {
@@ -212,5 +211,29 @@ namespace SMS_APP.Repository
                 throw new Exception($"An error occurred while retrieving enrollments for student with ID {studentId}.", ex);
             }
         }
+        public async Task<Grade> GetByEnrollmentIdAsync(string url, int enrollmentId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"{URL.GradeAPIPath}/enrollment/{enrollmentId}");
+                var client = _httpClientFactory.CreateClient();
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonstring = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Grade>(jsonstring);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
     }
 }

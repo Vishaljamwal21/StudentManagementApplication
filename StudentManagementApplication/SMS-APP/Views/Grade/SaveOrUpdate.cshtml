@@ -16,12 +16,12 @@
 
                         <div class="form-group">
                             <label class="control-label">Student</label>
-                            <input type="text" class="form-control" value="@Model.Enrollment.Student.Name" readonly />
+                            <input type="text" class="form-control" value="@ViewData["StudentName"]" readonly />
                         </div>
 
                         <div class="form-group">
                             <label class="control-label">Course</label>
-                            <input type="text" class="form-control" value="@Model.Enrollment.Course.Title" readonly />
+                            <input type="text" class="form-control" value="@ViewData["CourseTitle"]" readonly />
                         </div>
 
                         <div class="form-group">

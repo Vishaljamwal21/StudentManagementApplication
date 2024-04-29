@@ -25,7 +25,6 @@ namespace SMS_APP
             }
             // Define your JWT secret key
             var secretKey = "veryLongAndSecureSecretKeyWith32CharactersMin";
-            // Initialize the security key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             // Validate the JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -47,7 +46,6 @@ namespace SMS_APP
                     return;
                 }
                 var userRole = roleClaim.Value;
-                // Check if the user role allows access to the requested controller
                 if (userRole == "Admin" || userRole == "User" || userRole == "Teacher")
                 {
                     // Allow access to all controllers for Admin, User, and Teacher roles
@@ -62,7 +60,6 @@ namespace SMS_APP
             }
             catch (Exception)
             {
-                // Redirect to login in case of token validation failure
                 context.Result = new RedirectToActionResult("Login", "User", null);
             }
         }

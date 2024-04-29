@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SMS_APP.Models;
 using SMS_APP.Repository;
 using SMS_APP.Repository.IRepository;
@@ -52,6 +53,7 @@ namespace SMS_APP.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -78,7 +80,6 @@ namespace SMS_APP.Controllers
                 ModelState.AddModelError(nameof(Student.Email), "The entered email does not match your login email.");
                 return View(student);
             }
-
             if (ModelState.IsValid)
             {
                 if (student.Id == 0)
@@ -90,14 +91,12 @@ namespace SMS_APP.Controllers
                         ModelState.AddModelError(nameof(Student.Email), "A student with the same email already exists.");
                         return View(student);
                     }
-
                     await _studentRepository.CreateAsync(URL.StudentAPIPath, student);
                 }
                 else
                 {
                     await _studentRepository.UpdateAsync(URL.StudentAPIPath, student);
                 }
-
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -105,7 +104,5 @@ namespace SMS_APP.Controllers
                 return View(student);
             }
         }
-
-
     }
 }

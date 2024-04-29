@@ -37,11 +37,18 @@ namespace StudentManagementSystum.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateGrade(GradeDTO gradeDTO)
+        public async Task<IActionResult> CreateGrade(GradeDTO gradeDTO)
         {
             if (gradeDTO == null)
             {
                 return BadRequest("Grade object is null");
+            }
+
+            var existingGrade = await _gradeRepository.GetByEnrollmentIdAsync(gradeDTO.EnrollmentId);
+            if (existingGrade != null)
+            {
+                ModelState.AddModelError("", $"A grade already exists for the enrollment ID {gradeDTO.EnrollmentId}");
+                return Conflict(ModelState);
             }
 
             var grade = _mapper.Map<Grade>(gradeDTO);
@@ -53,6 +60,8 @@ namespace StudentManagementSystum.Controllers
 
             return CreatedAtRoute("GetGrade", new { gradeId = grade.Id }, grade);
         }
+
+
 
         [HttpPut("{gradeId}")]
         public IActionResult UpdateGrade(int gradeId, GradeDTO gradeDTO)
@@ -89,5 +98,24 @@ namespace StudentManagementSystum.Controllers
 
             return NoContent();
         }
+        [HttpGet("enrollment/{enrollmentId}")]
+        public async Task<IActionResult> GetByEnrollmentIdAsync(int enrollmentId)
+        {
+            try
+            {
+                var grade = await _gradeRepository.GetByEnrollmentIdAsync(enrollmentId);
+                if (grade == null)
+                {
+                    return NotFound();
+                }
+                return Ok(grade);
+            }
+            catch (Exception ex)
+            {
+                // Log or handle the exception appropriately
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
     }
 }
