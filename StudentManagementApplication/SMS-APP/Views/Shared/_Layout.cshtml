@@ -59,6 +59,17 @@
         .logout-btn {
             margin-top: auto;
         }
+
+        .btn-yellow {
+            background-color: yellow;
+            border-color: yellow;
+        }
+
+            .btn-yellow:hover {
+                background-color: #ffeb3b; /* Darker yellow on hover */
+                border-color: #ffeb3b; /* Darker yellow on hover */
+            }
+
     </style>
 </head>
 <body>
@@ -71,7 +82,7 @@
             <!-- Sidebar -->
             <div class="col-md-2 sidebar">
                 <div class="school-logo text-center my-3">
-                    <img src="https://png.pngtree.com/png-vector/20211006/ourmid/pngtree-school-logo-png-image_3972196.png" alt="School Logo" width="100" height="100">
+                    <img src="https://media.istockphoto.com/id/1172148782/vector/university-campus-logo-with-text-space-for-your-slogan-tag-line.jpg?s=612x612&w=0&k=20&c=lJKl1QKcLrIGX1iZTUHxz0qaGEO-GSeUP7AV1kNcKgg=" alt="School Logo" width="100" height="100">
 
                     <div>
                         <p class="text-white"><i class="fas fa-map-marker-alt text-white"></i>Chandigarh, India</p>
@@ -148,8 +159,9 @@
                     else
                     {
                         <div>
-                            <a class="btn btn-info  text-white" asp-area="" asp-controller="User" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                            <a class="btn btn-yellow text-dark" asp-area="" asp-controller="User" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
                         </div>
+
                         <br>
                         <div>
                             <a class="btn btn-primary text-white" asp-area="" asp-controller="User" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>

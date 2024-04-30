@@ -1,5 +1,44 @@
 ﻿@model SMS_APP.Models.User
 
+<style>
+    /* Style for the card */
+    .card {
+        border: 1px solid #ddd; /* Add a border */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow */
+    }
+
+    /* Style for the card header */
+    .card-header {
+        background-color: #007bff; /* Blue background */
+        color: #fff; /* White text */
+        border-bottom: none; /* No border */
+        border-top-left-radius: 10px; /* Rounded corners */
+        border-top-right-radius: 10px;
+    }
+
+    /* Style for the form */
+    form {
+        padding: 20px; /* Add padding */
+    }
+
+    /* Style for the form fields */
+    .form-group {
+        margin-bottom: 20px; /* Add margin */
+    }
+
+    /* Style for the submit button */
+    .btn-primary {
+        background-color: #007bff; /* Blue background */
+        border-color: #007bff; /* Blue border */
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker blue background on hover */
+            border-color: #0056b3; /* Darker blue border on hover */
+        }
+</style>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -12,7 +51,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <label asp-for="UserName" class="control-label">Name</label>
-                            <input asp-for="UserName" class="form-control" required/>
+                            <input asp-for="UserName" class="form-control" required />
                             <span asp-validation-for="UserName" class="text-danger"></span>
                         </div>
                         <div class="form-group">
@@ -20,15 +59,13 @@
                             <input asp-for="Email" class="form-control" type="email" id="email" name="Email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
-
                         <div class="form-group">
                             <label asp-for="Password" class="control-label">Password</label>
                             <input asp-for="Password" type="password" class="form-control" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        </br>
                         <div class="form-group text-center">
-                            <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            <button type="submit" class="btn btn-yellow text-dark border-dark">Register</button>
                         </div>
                     </form>
                 </div>
@@ -36,6 +73,7 @@
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function () {
         $.validator.addMethod("gmailFormat", function (value, element) {

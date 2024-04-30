@@ -1,11 +1,47 @@
 ﻿@model SMS_APP.Models.UserVM
 
+<style>
+    /* Custom styles for the login form */
+    .card {
+        border-radius: 15px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #2196F3; /* Blue */
+        color: white;
+        text-align: center;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .btn-primary {
+        background-color: #2196F3; /* Blue */
+        border-color: #2196F3; /* Blue */
+        border-radius: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: #1976D2; /* Darker Blue */
+            border-color: #1976D2; /* Darker Blue */
+        }
+
+    .text-danger {
+        color: red;
+    }
+</style>
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="text-center">Login</h2>
+                    <h2>Login</h2>
                 </div>
                 <div class="card-body">
                     <form asp-action="Login" method="post" onsubmit="return storeToken()">
@@ -22,7 +58,7 @@
                             <input asp-for="Password" type="password" class="form-control" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
-                        </br>
+                        <br />
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                         </div>
@@ -32,4 +68,3 @@
         </div>
     </div>
 </div>
-
