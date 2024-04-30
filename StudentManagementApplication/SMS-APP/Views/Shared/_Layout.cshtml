@@ -18,90 +18,160 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://kit.fontawesome.com/e19c476714.js">
+
+     <style>
+        /* Sidebar styles */
+        .sidebar {
+            background-color: #000;
+            border-right: 1px solid #ddd;
+            height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        /* Sidebar navigation styles */
+        .sidebar-nav {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            .sidebar-nav .nav-item {
+                padding: 10px;
+            }
+
+            .sidebar-nav .nav-link {
+                color: #fff;
+            }
+
+        /* Dropdown styles */
+        .dropdown-menu {
+            background-color: #000;
+        }
+
+            .dropdown-menu .dropdown-item {
+                color: #fff;
+            }
+
+        /* Logout button styles */
+        .logout-btn {
+            margin-top: auto;
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                       
-                        @if (isAuthenticated)
-                        {
-                            @if (isAuthenticated && (userRole == "Admin" || userRole == "Student"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Student" asp-action="Index">Register</a>
-                                </li>
-                            }
-                            @if (isAuthenticated && (userRole == "Admin" || userRole == "Teacher"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Enrollment" asp-action="Index">Enroll/Grade</a>
-                                </li>
-                            }
-                            @if (isAuthenticated && userRole == "Student")
-                            {
-
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Enrollment" asp-action="Index">Enroll Detail</a>
-                                </li>
-                            }
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Grade" asp-action="Index">Grade Details</a>
-                            </li>
-                            @if (isAuthenticated && userRole == "Admin")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Course" asp-action="Index">Course</a>
-                                </li>
-                            }
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                        }
-                    </ul>
-                    <ul class="navbar-nav">
-
-
-                        @if (isAuthenticated)
-                        {
-                            <form asp-area="" asp-controller="User" asp-action="Logout" method="post" class="form-inline">
-                                <div class="d-flex align-items-center">
-                                    <span class="nav-link text-dark mr-3">Hii !: @userEmail</span>
-                                    <button type="submit" class="nav-link btn btn-danger text-dark">Logout</button>
-                                </div>
-                            </form>
-                        }
-                        else
-                        {
-                            <div>
-                                <a class="btn btn-outline-dark" asp-area="" asp-controller="User" asp-action="Register">Register</a>
-                            </div>
-                            <div>
-                                <a class="btn btn-outline-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                            </div>
-                        }
-
-                      
-                    </ul>
-                </div>
-            </div>
-        </nav>
+        <!-- Navbar content -->
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar">
+                <div class="school-logo text-center my-3">
+                    <img src="https://png.pngtree.com/png-vector/20211006/ourmid/pngtree-school-logo-png-image_3972196.png" alt="School Logo" width="100" height="100">
 
+                    <div>
+                        <p class="text-white"><i class="fas fa-map-marker-alt text-white"></i>Chandigarh, India</p>
+                        @if (isAuthenticated)
+                        {
+                            @if (userRole == "Admin")
+                            {
+                                <span class="text-white">Admin Module</span>
+                            }
+                            else if (userRole == "Teacher")
+                            {
+                                <span class="text-white">Teacher Module</span>
+                            }
+                            else if (userRole == "Student")
+                            {
+                                <span class="text-white">Student Module</span>
+                            }
+                        }
+                    </div>
+                </div>
+                <!-- Sidebar content -->
+                <ul class="nav flex-column sidebar-nav">
+                    <!-- Navigation links -->
+                    @if (isAuthenticated)
+                    {
+                        @if (isAuthenticated && (userRole == "Admin" || userRole == "Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Student" asp-action="Index"><i class="fas fa-user-plus"></i>Student</a>
+                            </li>
+                        }
+                        @if (isAuthenticated && (userRole == "Admin" || userRole == "Teacher"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Enrollment" asp-action="Index"> <i class="fas fa-user-graduate"></i>Enroll/Grade</a>
+                            </li>
+                        }
+                        @if (isAuthenticated && userRole == "Student")
+                        {
+
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Enrollment" asp-action="Index"><i class="fas fa-user-check"></i> Enroll Detail</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Grade" asp-action="Index"> <i class="fas fa-list-alt"></i> Grade Details</a>
+                        </li>
+                        @if (isAuthenticated && userRole == "Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Course" asp-action="Index"> <i class="fas fa-book"></i> Course</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i> Home</a>
+                        </li>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+
+
+                    @if (isAuthenticated)
+                    {
+                        <form asp-area="" asp-controller="User" asp-action="Logout" method="post" class="form-inline">
+                            <div class="d-flex align-items-center">
+                                <span class="nav-link text-white mr-3">Hii !: @userEmail</span>
+                                <button type="submit" class="nav-link btn btn-danger text-white"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div>
+                            <a class="btn btn-info  text-white" asp-area="" asp-controller="User" asp-action="Register"><i class="fas fa-user-plus"></i> Register</a>
+                        </div>
+                        <br>
+                        <div>
+                            <a class="btn btn-primary text-white" asp-area="" asp-controller="User" asp-action="Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        </div>
+                    }
+
+
+                </ul>
+
+            </div>
+            <!-- Main content -->
+            <div class="col-md-9 main-content">
+                <header>
+                    <h1 class="school-name text-center">Carmel Convent College</h1>
+                </header>
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+ 
     <footer class="border-top footer text-muted">
        
     </footer>
