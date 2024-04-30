@@ -211,8 +211,8 @@ namespace SMS_APP.Repository
                 throw new Exception($"An error occurred while retrieving enrollments for student with ID {studentId}.", ex);
             }
         }
-        public async Task<Grade> GetByEnrollmentIdAsync(string url, int enrollmentId)
-        {
+        public async Task<Grade> GetEnrollmentIdAsync(string url, int enrollmentId)
+         {
             try
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, $"{URL.GradeAPIPath}/enrollment/{enrollmentId}");
@@ -234,6 +234,7 @@ namespace SMS_APP.Repository
                 return null;
             }
         }
+
 
     }
 }

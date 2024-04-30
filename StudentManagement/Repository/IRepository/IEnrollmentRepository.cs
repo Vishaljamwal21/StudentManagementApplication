@@ -13,6 +13,7 @@ namespace StudentManagementSystum.Repository.IRepository
         bool DeleteEnrollment(Enrollment enrollment);
         ICollection<Enrollment> GetEnrollmentsByStudentId(int studentId);
         ICollection<Enrollment> GetEnrollmentsByCourseId(int courseId);
+        ICollection<Enrollment> GetEnrollmentsByEmail(string email);
         bool Save();
     }
 }

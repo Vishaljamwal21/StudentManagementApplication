@@ -11,7 +11,8 @@ namespace StudentManagementSystum.Repository.IRepository
         bool CreateGrade(Grade grade);
         bool UpdateGrade(Grade grade);
         bool DeleteGrade(Grade grade);
-        Task<Grade> GetByEnrollmentIdAsync(int enrollmentId);
+        Task<Grade> GetEnrollmentIdAsync(int enrollmentId);
+
         bool Save();
     }
 }

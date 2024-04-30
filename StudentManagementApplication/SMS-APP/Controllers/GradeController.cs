@@ -10,7 +10,7 @@ namespace SMS_APP.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly IEnrollmentRepository _enrollmentRepository;
         private readonly IStudentRepository _studentRepository;
-        public GradeController(IGradeRepository gradeRepository, IEnrollmentRepository enrollmentRepository,IStudentRepository studentRepository)
+        public GradeController(IGradeRepository gradeRepository, IEnrollmentRepository enrollmentRepository, IStudentRepository studentRepository)
         {
             _gradeRepository = gradeRepository;
             _enrollmentRepository = enrollmentRepository;
@@ -18,12 +18,47 @@ namespace SMS_APP.Controllers
         }
 
         #region APIs
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var grades = await _gradeRepository.GetAllAsync(URL.GradeAPIPath);
-            return Json(new { data = grades });
+            var userRole = SessionHandler.GetUserRole(HttpContext);
+            if (userRole == "Admin" || userRole == "Teacher")
+            {
+                var grades = await _gradeRepository.GetAllAsync(URL.GradeAPIPath);
+                return Json(new { data = grades });
+            }
+            else if (userRole == "Student")
+            {
+                var userEmail = SessionHandler.GetUserEmail(HttpContext);
+                var students = await _studentRepository.GetStudentByEmailAsync(userEmail, URL.StudentAPIPath);
+                var student = students.FirstOrDefault();
+                if (student == null)
+                {
+                    return Json(new { data = new object[] { } });
+                }
+                var studentEnrollments = await _enrollmentRepository.GetEnrollmentsByStudentId(student.Id);
+                var enrollment = studentEnrollments.FirstOrDefault(); // Get the first enrollment record
+                if (enrollment == null)
+                {
+                    return NotFound("Enrollment not found");
+                }
+                var grade = await _gradeRepository.GetEnrollmentIdAsync(URL.GradeAPIPath, enrollment.Id);
+                var gradeData = new[]
+{
+    new Grade
+    {
+        Enrollment = enrollment,
+        GradeValue = grade?.GradeValue ?? "N/A",
+        Id = grade?.Id ?? 0
+    }
+};
+
+                return Json(new { data = gradeData });
+            }
+            else
+            {
+                return StatusCode(500, "Invalid user role");
+            }
         }
 
         [HttpDelete]
@@ -32,7 +67,6 @@ namespace SMS_APP.Controllers
             var grade = await _gradeRepository.GetAsync(URL.GradeAPIPath, id);
             if (grade == null)
                 return Json(new { success = false, message = "Unable to delete the data" });
-
             await _gradeRepository.DeleteAsync(URL.GradeAPIPath, id);
             return Json(new { success = true, message = "Data Deleted Successfully" });
         }
@@ -73,7 +107,7 @@ namespace SMS_APP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var existingGrade = await _gradeRepository.GetByEnrollmentIdAsync(URL.GradeAPIPath, grade.EnrollmentId);
+                var existingGrade = await _gradeRepository.GetEnrollmentIdAsync(URL.GradeAPIPath, grade.EnrollmentId);
                 if (existingGrade != null)
                 {
                     var enroll = await _enrollmentRepository.GetAsync(URL.EnrollmentAPIPath, grade.EnrollmentId);

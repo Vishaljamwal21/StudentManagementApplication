@@ -12,12 +12,14 @@ namespace StudentManagementSystum.Controllers
     public class EnrollmentController : ControllerBase
     {
         private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly IStudentRepository _studentRepository; // Add StudentRepository dependency
         private readonly IMapper _mapper;
 
-        public EnrollmentController(IEnrollmentRepository enrollmentRepository, IMapper mapper)
+        public EnrollmentController(IEnrollmentRepository enrollmentRepository, IMapper mapper, IStudentRepository studentRepository)
         {
             _enrollmentRepository = enrollmentRepository;
             _mapper = mapper;
+            _studentRepository = studentRepository;
         }
 
         [HttpGet]
@@ -98,6 +100,16 @@ namespace StudentManagementSystum.Controllers
                 return StatusCode(500, "Internal server error while deleting the enrollment.");
             }
             return NoContent();
+        }
+        [HttpGet("student/{email}")]
+        public IActionResult GetEnrollmentsByEmail(string email)
+        {
+            var enrollments = _enrollmentRepository.GetEnrollmentsByEmail(email);
+            if (enrollments == null)
+            {
+                return NotFound();
+            }
+            return Ok(enrollments);
         }
     }
 }

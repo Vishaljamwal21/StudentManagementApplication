@@ -44,7 +44,7 @@ namespace StudentManagementSystum.Controllers
                 return BadRequest("Grade object is null");
             }
 
-            var existingGrade = await _gradeRepository.GetByEnrollmentIdAsync(gradeDTO.EnrollmentId);
+            var existingGrade = await _gradeRepository.GetEnrollmentIdAsync(gradeDTO.EnrollmentId);
             if (existingGrade != null)
             {
                 ModelState.AddModelError("", $"A grade already exists for the enrollment ID {gradeDTO.EnrollmentId}");
@@ -99,11 +99,11 @@ namespace StudentManagementSystum.Controllers
             return NoContent();
         }
         [HttpGet("enrollment/{enrollmentId}")]
-        public async Task<IActionResult> GetByEnrollmentIdAsync(int enrollmentId)
+        public async Task<IActionResult> GetEnrollmentIdAsync(int enrollmentId)
         {
             try
             {
-                var grade = await _gradeRepository.GetByEnrollmentIdAsync(enrollmentId);
+                var grade = await _gradeRepository.GetEnrollmentIdAsync(enrollmentId);
                 if (grade == null)
                 {
                     return NotFound();
@@ -116,6 +116,7 @@ namespace StudentManagementSystum.Controllers
                 return StatusCode(500, "An error occurred while processing your request.");
             }
         }
+        
 
     }
 }

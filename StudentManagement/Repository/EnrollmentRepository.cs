@@ -81,5 +81,21 @@ namespace StudentManagementSystum.Repository
         {
             return _context.Enrollments.Any(e => e.Id == enrollmentId);
         }
+        public ICollection<Enrollment> GetEnrollmentsByEmail(string email)
+        {
+            try
+            {
+                // Retrieve enrollments with included Student and Course navigation properties
+                return _context.Enrollments
+                    .Include(e => e.Student)
+                    .Include(e => e.Course)
+                    .Where(e => e.Student.Email == email)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -33,7 +33,7 @@ namespace SMS_APP.Controllers
                 }
                 else
                 {
-                    return BadRequest("Student not found");
+                    return Json(new { data = new object[] { } }); // Return empty array if no records found
                 }
             }
             else if (userRole == "Admin" || userRole == "Teacher")
@@ -46,6 +46,7 @@ namespace SMS_APP.Controllers
                 return BadRequest("Unauthorized access");
             }
         }
+
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)

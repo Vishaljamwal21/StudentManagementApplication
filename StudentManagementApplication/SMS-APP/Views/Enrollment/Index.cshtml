@@ -27,7 +27,6 @@
 </div>
 @section scripts {
     <script>
-
         var datatable;
 
         $(document).ready(function () {
@@ -53,14 +52,14 @@
                                 "data": "id",
                                 "render": function (data) {
                                     return `
-                                                                            <div class="text-center">
-                                                                                <a class="btn btn-danger" onclick="DeleteEnrollment(${data})"><i class="fas fa-trash"></i></a>
-                                                                                <a class="btn btn-primary" href="/Grade/SaveOrUpdate?enrollmentId=${data}" @if (userRole != "Teacher")
+                                                            <div class="text-center">
+                                                                <a class="btn btn-danger" onclick="DeleteEnrollment(${data})"><i class="fas fa-trash"></i></a>
+                                                                <a class="btn btn-primary" href="/Grade/SaveOrUpdate?enrollmentId=${data}" @if (userRole != "Teacher")
                         {
                             <text>disabled</text>
                         }>Grade</a>
-                                                                            </div>
-                                                                        `;
+                                                            </div>
+                                                        `;
                                 }
                             },
                 </text>
@@ -70,7 +69,10 @@
                 <text></text>
             }
         }
-                                ]
+                        ],
+                "language": {
+                    "emptyTable": "No records found"
+                }
             });
         }
 
@@ -102,6 +104,5 @@
                 }
             });
         }
-
     </script>
 }
